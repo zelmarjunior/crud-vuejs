@@ -1,0 +1,38 @@
+{
+    "customers": [
+        {
+        "id": "0",
+        "fullName": "Zelmar Dalavequia Júnior",
+        "adress": "Dalcy F de Andrade",
+        "adressNumber": "493",
+        "district": "Primeiro de Maio",
+        "complement": "Casa Rosa",
+        "city": "Farroupilha",
+        "postalCode": "95181184",
+        "cpf": "03463426005",
+        "rg": "1109040186",
+        "phone": "",
+        "mobilePhone": "54996650287",
+        "dateOfBirth": "14/04/1997",
+        "email": "zelmar.junior1@gmail.com",
+        "salary": "3000"
+        },
+        {
+        "id": "1",
+        "fullName": "Júnior",
+        "adress": "Augusto Crippa",
+        "adressNumber": "467",
+        "district": "Primeiro de Maio",
+        "complement": "Casa Rosa",
+        "city": "Farroupilha",
+        "postalCode": "95181184",
+        "cpf": "03463426005",
+        "rg": "1109040186",
+        "phone": "",
+        "mobilePhone": "54996650287",
+        "dateOfBirth": "14/04/1997",
+        "email": "zelmar.junior1@.com",
+        "salary": "3000"
+        }
+    ]
+}
