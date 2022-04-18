@@ -1,13 +1,22 @@
 <template>
     <div class="form-main-container">
-      
-
     <form>
       <section>
+        <div class="input-container">
+          <label for="cpf">CPF: </label>
+          <input type="text" name="cpf" id="cpf" v-model="cpf" />
+        </div>
         <div class="input-container">
           <label for="name">Nome:</label>
           <input type="text" name="name" id="name" v-model="fullName" />
         </div>
+        <div class="input-container">
+          <label for="email">E-mail: </label>
+          <input type="text" name="email" id="email" v-model="email" />
+        </div>
+      </section>
+
+      <section>
         <div class="input-container">
           <label for="adress">Endereço: </label>
           <input type="text" name="adress" id="adress" v-model="adress" />
@@ -16,35 +25,24 @@
           <label for="adressNumber">Nº: </label>
           <input type="text" name="adressNumber" id="adressNumber" v-model="adressNumber" />
         </div>
+        <div class="input-container">
+          <label for="district">Bairro: </label>
+          <input type="text" name="district" id="district" v-model="district" />
+        </div>
       </section>
 
       <section>
-            <div class="input-container">
-              <label for="district">Bairro: </label>
-              <input type="text" name="district" id="district" v-model="district" />
-            </div>
-            <div class="input-container">
-              <label for="complement">Complemento: </label>
-              <input type="text" name="complement" id="complement" v-model="complement" />
-            </div>
-            <div class="input-container">
-              <label for="city">Cidade: </label>
-              <input type="text" name="city" id="city" v-model="city" />
-            </div>
-      </section>
-
-      <section>
+        <div class="input-container">
+          <label for="complement">Complemento: </label>
+          <input type="text" name="complement" id="complement" v-model="complement" />
+        </div>
+        <div class="input-container">
+          <label for="city">Cidade: </label>
+          <input type="text" name="city" id="city" v-model="city" />
+        </div>
         <div class="input-container">
           <label for="postalCode">CEP: </label>
           <input type="text" name="postalCode" id="postalCode" v-bind="postalCode" />
-        </div>
-        <div class="input-container">
-          <label for="cpf">CPF: </label>
-          <input type="text" name="cpf" id="cpf" v-model="cpf" />
-        </div>
-        <div class="input-container">
-          <label for="rg">RG: </label>
-          <input type="text" name="rg" id="rg" v-model="rg" />
         </div>
       </section>
 
@@ -64,21 +62,22 @@
       </section>
 
       <section>
-        <div class="input-container">
-          <label for="email">E-mail: </label>
-          <input type="text" name="email" id="email" v-model="email" />
-        </div>
+        
         <div class="input-container">
           <label for="salary">Salário: </label>
 
           <input type="text" name="salary" id="salary" v-model="salary" />
         </div>
+        <div class="input-container">
+          <label for="rg">RG: </label>
+          <input type="text" name="rg" id="rg" v-model="rg" />
+        </div>
         
       </section>
       <div>
 
-        <button v-if='this.PropOption === "Cadastrar"' v-on:click='registerCustomer($event)'>Cadastrar</button>
-        <button v-else-if='this.PropOption === "Editar"' v-on:click='registerCustomer($event)'>Salvar Dados</button>
+        <button id="registerButton" v-on:click='registerCustomer($event)' style="display: none;">Cadastrar</button>
+        <button id="updateButton" v-on:click='updateCustomer($event)' style="display: none;">Editar</button>
 
         <a @click='loga'>Voltar</a>
 
@@ -91,15 +90,10 @@
 <script>
 /* import CustomerData from './CustomerData.vue' */
 
-
 export default {
     name: "InputForm",
-    components: {
-      
-    },
-    props: {
-        PropOption: String,
-    },
+    components: {},
+    props: {},
     data() {
         return {
             id: "",
@@ -118,18 +112,16 @@ export default {
             email: "",
             salary: "",
             customers: [],
-            /* pica: this.PropOption */
-          
         };
     },
     methods: {
-
-
         registerCustomer(e) {
             e.preventDefault();
             console.log(this.dataOption);
+
             const customer = {
                 customerId: this.id,
+                customerCpf: this.cpf,
                 customerFullName: this.fullName,
                 customerAdress: this.adress,
                 customerAdressNumber: this.adressNumber,
@@ -137,7 +129,6 @@ export default {
                 customerComplement: this.complement,
                 customerCity: this.city,
                 customerPostalCode: this.postalCode,
-                customerCpf: this.cpf,
                 customerRg: this.rg,
                 customerPhone: this.phone,
                 customerMobilePhone: this.mobilePhone,
@@ -145,17 +136,29 @@ export default {
                 customerEmail: this.email,
                 customerSalary: this.salary,
             };
-            
-            this.customers.push(customer);
-            console.log("Cliente Adicionado");
-            console.log(this.customers);
-            localStorage.setItem('customer', this.customers);
-
-            
-            
+            if (customer.customerCpf) {
+                let customerStorage = JSON.parse(
+                    localStorage.getItem("customers")
+                );
+                for (const customer of customerStorage) {
+                    if (customer.customerCpf == this.cpf) {
+                        return alert("CPF já cadastrado");
+                    }
+                }
+                this.customers.push(customer);
+                console.log("Cliente Adicionado");
+                console.log(this.customers);
+                localStorage.setItem(
+                    "customers",
+                    JSON.stringify(this.customers)
+                );
+                console.log();
+                this.cleanForm();
+            } else {
+                alert("Digite um CPF");
+            }
         },
         deleteCustomer(index) {
-            
             this.customers.splice(index, 1);
             console.log("Cliente Deletadp");
             console.log(this.customers);
@@ -163,12 +166,53 @@ export default {
         },
         updateCustomer(e) {
             e.preventDefault();
-            this.customers.push();
+            console.log("To dentro do update");
+
+            const customer = {
+                customerId: this.id,
+                customerCpf: this.cpf,
+                customerFullName: this.fullName,
+                customerAdress: this.adress,
+                customerAdressNumber: this.adressNumber,
+                customerDistrict: this.district,
+                customerComplement: this.complement,
+                customerCity: this.city,
+                customerPostalCode: this.postalCode,
+                customerRg: this.rg,
+                customerPhone: this.phone,
+                customerMobilePhone: this.mobilePhone,
+                customerDateOfBirth: this.dateOfBirth,
+                customerEmail: this.email,
+                customerSalary: this.salary,
+            };
+            if (customer.customerCpf) {
+                let customerStorage = JSON.parse(
+                    localStorage.getItem("customers")
+                );
+                for (let index = 0; index < customerStorage.length; index++) {
+                    const customer = customerStorage[index];
+                    if (customer.customerCpf == this.cpf) {
+                        console.log(customerStorage);
+                        customerStorage.splice(customerStorage[index], 1);
+                        this.customers = customerStorage;
+                        console.log("Cliente Editado");
+                        console.log(this.customers);
+                        localStorage.setItem(
+                            "customers",
+                            JSON.stringify(this.customers)
+                        );
+                        console.log();
+                        this.cleanForm();
+                        alert("alterado");
+                    }
+                }
+            } else {
+                alert("nao pode deixar cpf vazio seu nbosta");
+            }
+
+            /* this.customers.push(); */
 
             this.cleanForm();
-        },
-        editDataCustomer(a) {
-            this.fullName = this.customers[a].customerFullName;
         },
         cleanForm() {
             this.fullName = "";
@@ -188,6 +232,9 @@ export default {
             this.email = "";
             this.salary = "";
         },
+        getData() {
+            console.log(this.fullName);
+        },
     },
 };
 </script>
@@ -203,6 +250,7 @@ export default {
 
 form {
     border: solid 1px black;
+    padding: 30px;
 }
 
 table {
@@ -213,7 +261,7 @@ td {
     width: 250px;
 }
 .form-main-container {
-    display: flex;
+    display: none;
     flex-direction: column;
     justify-content: center;
     align-items: center;
