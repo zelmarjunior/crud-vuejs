@@ -152,8 +152,8 @@ export default {
                     "customers",
                     JSON.stringify(this.customers)
                 );
-                console.log();
                 this.cleanForm();
+                alert('Usuário Cadastrado com Sucesso!');
             } else {
                 alert("Digite um CPF");
             }

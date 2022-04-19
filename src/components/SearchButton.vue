@@ -1,12 +1,10 @@
 <template>
     <div class="main-container">
-      <h1>Cadastrar Cliente</h1>
-      <button id="button" class="register-button" v-on:click='showForms'>
-        ADD
+      <button id="register-button" class="register-button" v-on:click='showForms'>
+        Cadastrar Cliente
       </button>
-      <h1>Buscar com CPF</h1>
-      <button id="button" class="register-button" v-on:click='getDataInputSearch'>
-        BUSCAR
+      <button id="search-button" class="search-button" v-on:click='showwInputSearch'>
+        Buscar com CPF
       </button>
       <input type="text" name="search" id="search">
     </div>
@@ -17,6 +15,11 @@
 export default {
     name: "SearchButton",
     methods: {
+        showwInputSearch() {
+            document.getElementById("search").style.display = "flex";
+            document.getElementById("register-button").style.display = "none";
+        },
+
         getDataInputSearch() {
             let searchData = document.getElementById("search").value;
             if (searchData) {
@@ -33,7 +36,6 @@ export default {
                         document.getElementById(
                             "registerButton"
                         ).style.display = "none";
-                        alert("achei um cara");
                         document.getElementById("cpf").value =
                             customer.customerCpf;
                         document.getElementById("name").value =
@@ -65,7 +67,7 @@ export default {
 
                         break;
                     } else {
-                        alert("nao achei nenhum");
+                        alert("CPF não cadastrado!");
                     }
                 }
             } else {
@@ -75,6 +77,7 @@ export default {
 
         showForms() {
             this.clean();
+            document.getElementById("search-button").style.display = "none";
 
             document.getElementsByClassName(
                 "form-main-container"
@@ -82,6 +85,7 @@ export default {
             document.getElementById("registerButton").style.display = "flex";
             document.getElementById("updateButton").style.display = "none";
         },
+
         clean() {
             document.getElementById("cpf").value = "";
             document.getElementById("name").value = "";
@@ -103,33 +107,41 @@ export default {
 </script>
 
 <style scoped>
+
 .main-container {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
-    
+    /* background-color: black; */
 }
 
 #search {
-    margin: 0 20px;
+    margin: 20px 20px;
+    display: none;
 }
 
-.register-button {
-    /*    display: flex;
-    justify-content: center;
-    align-content: center;
-    /* border: solid 1px#545454; */
-    /* background-color: #545454;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    font-size: 44px;
-    cursor: pointer; */
+.register-button,
+.search-button {
+    width: 100px;
+    height: 100px;
+    border-radius: 100%;
+    border: 1px solid transparent;
+    opacity: 0.8;
+    padding: 10px;
+    margin: 40px;
+    color: #545454;
+    font-weight: 700;
+    font-size: 11px;
+    background-color: aqua;
 }
 
-h1 {
-    color: black;
-    font-size: 20px;
+.register-button:hover,
+.search-button:hover {
+    opacity: 1;
+    width: 95px;
+    height: 95px;
+    transition: 0.1s ease-in-out;
+    cursor: pointer;
 }
 </style>
